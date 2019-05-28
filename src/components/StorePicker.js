@@ -3,11 +3,18 @@ import React from 'react';
 import { getFunName } from "./../helpers";
 
 class StorePicker extends React.Component {
+  constructor(){
+    super();
+    this.storChange= this.storChange.bind(this);
+  }
+
   storChange(e){
     e.preventDefault();
     console.log(this);
     const storeId=this.storInput.value
-    this.context.router.transitionTo({pathname: `/store/${storeId}`})  
+    // this.context.router.transitionTo({pathname: `/store/${storeId}`})
+    this.context.router.transitionTo({pathname: `/store/${storeId}`})
+    // this.props.history.push(`/store/${storeId}`)  
   }
 
   render() {
@@ -22,7 +29,7 @@ class StorePicker extends React.Component {
   }
 }
 
-StorePicker.contextTypes ={
+StorePicker.contextTypes = {
   router: React.PropTypes.object
 }
 
