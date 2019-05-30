@@ -12,6 +12,7 @@ class App extends React.Component {
     this.addFish=this.addFish.bind(this)
     this.loadSamples=this.loadSamples.bind(this)
     this.addToOrder=this.addToOrder.bind(this)
+    this.updateFish=this.updateFish.bind(this)
     this.state={
         fishes:{},
         order:{}
@@ -23,10 +24,21 @@ class App extends React.Component {
       context:this,
       state:"fishes"
     });
+
+    const localeStorageRef=localStorage.getItem(`order-${this.props.params.storeId}`)
+    if (localeStorageRef) {
+      this.setState({
+        order:JSON.parse(localeStorageRef)
+      })
+    }
   }
 
   componentWillUnmount(){
     base.removeBinding(this.ref);
+  }
+
+  componentWillUpdate(nextProps, nextState){
+    localStorage.setItem(`order-${this.props.params.storeId}`,JSON.stringify(nextState.order));
   }
 
   addFish(fish){
@@ -35,16 +47,25 @@ class App extends React.Component {
     fishes[`fish-${timestamp}`]=fish
     this.setState({fishes:fishes})
   }
+
+  updateFish(key, updateFish){
+    const fishes={...this.state.fishes};
+    fishes[key]=updateFish;
+    this.setState({fishes});
+  }
+
   loadSamples(){
     this.setState({
       fishes:sampleFishes
     })
   }
+
   addToOrder(key){
     const order={...this.state.order}
     order[key] = order[key]+1 || 1
     this.setState({order:order})
   }
+
   render() {
     return (
       <div className="catch-of-the-day">
@@ -54,8 +75,16 @@ class App extends React.Component {
             {Object.keys(this.state.fishes).map(key=> <Fish key={key} index={key} details={this.state.fishes[key]} addToOrder={this.addToOrder}/>)}
           </ul>
         </div>
-        <Order fishes={this.state.fishes} order={this.state.order}/>
-        <Inventory addFish={this.addFish} loadSamples={this.loadSamples}/>
+        <Order 
+          fishes={this.state.fishes}
+          order={this.state.order}
+          params={this.props.params}/>
+        <Inventory 
+        addFish={this.addFish} 
+        loadSamples={this.loadSamples} 
+        fishes={this.state.fishes}
+        updateFish={this.updateFish}
+        />
       </div>
     )
   }
