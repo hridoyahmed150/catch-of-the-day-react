@@ -6,15 +6,17 @@ class StorePicker extends React.Component {
   constructor(){
     super();
     this.storChange= this.storChange.bind(this);
+    this.reload= this.reload.bind(this);
   }
 
   storChange(e){
     e.preventDefault();
-    console.log(this);
     const storeId=this.storInput.value
-    // this.context.router.transitionTo({pathname: `/store/${storeId}`})
-    this.context.router.transitionTo({pathname: `/store/${storeId}`})
-    // this.props.history.push(`/store/${storeId}`)  
+    this.context.router.transitionTo({pathname:`/store/${storeId}`});
+    this.reload();
+  }
+  reload(){
+    location.reload();
   }
 
   render() {
@@ -31,6 +33,6 @@ class StorePicker extends React.Component {
 
 StorePicker.contextTypes = {
   router: React.PropTypes.object
-}
+};
 
 export default StorePicker;
