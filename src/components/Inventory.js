@@ -15,7 +15,7 @@ class Inventory extends React.Component {
 	renderInventory(key){
 		const fish=this.props.fishes[key];
 		return (
-				<div className="fish-edit">
+				<div className="fish-edit" key={key}>
 					<input name="name"  type="text" placeholder="Fish Name" onChange={(e)=>this.handelChange(e,key)}
 					value={fish.name}
 					/>
@@ -40,6 +40,14 @@ class Inventory extends React.Component {
     	</div>
     )
   }
+}
+
+Inventory.propTypes={
+	fishes: React.PropTypes.object.isRequired,
+	updateFish: React.PropTypes.func.isRequired,
+	removeFish: React.PropTypes.func.isRequired,
+	addFish: React.PropTypes.func.isRequired,
+	loadSamples: React.PropTypes.func.isRequired
 }
 
 export default Inventory;
